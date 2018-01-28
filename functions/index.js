@@ -113,15 +113,15 @@ exports.checkWinner = functions.database.ref('/rounds/{roomKey}/{roundKey}/isAll
 });
   
   // Keeps track of the length of the 'likes' child list in a separate property.
-exports.onUserVoted = functions.database.ref('/rounds/{roomKey}/{roundKey}/votes/{userId}').onWrite(event => {
+exports.onUserVoted = functions.database.ref('/rounds/{roomKey}/{roundKey}/votes/').onWrite(event => {
   const collectionRef = event.data.ref.parent;
-  const countRef = collectionRef.parent.child('votesCount');
+  const countRef = collectionRef.child('votesCount');
   let votesCounter;
-  // Return the promise from countRef.transaction() so our function 
-  // waits for this async event to complete before it exits.
-    console.log("the event user id key " + event.params.userId);
-    if(event.params.userId == "dummy")
-        return;
+//   // Return the promise from countRef.transaction() so our function 
+//   // waits for this async event to complete before it exits.
+//     console.log("the event user id key " + event.params.userId);
+//     if(event.params.userId == "dummy")
+//         return;
 
   return countRef.transaction(current => {
     if (event.data.exists() ) {
